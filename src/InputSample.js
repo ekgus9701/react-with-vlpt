@@ -1,4 +1,6 @@
-import React,{useState} from 'react'
+import React,{useState, useRef} from 'react'
+
+//useRef로 특정 DOM 선택하기
 
 export default function InputSample() {
     const[inputs,setInputs]=useState({
@@ -6,22 +8,9 @@ export default function InputSample() {
         nickname:''
     });
 
+    const nameInput=useRef();
+
     const {name,nickname} =inputs; //비구조화 할당
-
-    /*
-        리액트 상태에서 객체를 수정해야할 때는 
-        새로운 객체를 만들어서 새로운 객체에 변화를 주고, 
-        이를 상태로 사용해주어야한다.
-        setInputs({
-        ...inputs,
-        [name]: value
-        });
-
-        -> 불변성을 지킨다
-        -> 리액트 컴포넌트에서 상태가 업데이트가 됐음을 감지
-        -> 필요한 리렌더링이 진행
-
-    */ 
 
     const onChange=(e) =>{
         const {value,name}=e.target;
@@ -36,11 +25,12 @@ export default function InputSample() {
         setInputs({
             name: '',
             nickname: '',
-          })
+          });
+          nameInput.current.focus();
     };
   return (
     <div>
-        <input name="name" placeholder="이름" onChange={onChange} value={name} />
+        <input name="name" placeholder="이름" onChange={onChange} value={name} ref={nameInput} />
         <input name="nickname" placeholder="닉네임" onChange={onChange} value={nickname}/>
        
         <button onClick={onReset}>초기화</button>
