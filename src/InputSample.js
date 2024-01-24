@@ -1,26 +1,54 @@
 import React,{useState} from 'react'
 
 export default function InputSample() {
-    const[text,setText]=useState('');
+    const[inputs,setInputs]=useState({
+        name:'',
+        nickname:''
+    });
 
-    //이벤트 객체 e를 파라미터로 받아와서 사용
-    //e.target은 이벤트가 발생한 DOM인 input DOM을 가르킴
-    //e.target.value는 현재 input에 입력한 값
+    const {name,nickname} =inputs; //비구조화 할당
+
+    /*
+        리액트 상태에서 객체를 수정해야할 때는 
+        새로운 객체를 만들어서 새로운 객체에 변화를 주고, 
+        이를 상태로 사용해주어야한다.
+        setInputs({
+        ...inputs,
+        [name]: value
+        });
+
+        -> 불변성을 지킨다
+        -> 리액트 컴포넌트에서 상태가 업데이트가 됐음을 감지
+        -> 필요한 리렌더링이 진행
+
+    */ 
+
     const onChange=(e) =>{
-        setText(e.target.value);
+        const {value,name}=e.target;
+        console.log(e.target);
+        setInputs({
+            ...inputs, // 기존의 input 객체를 복사한 뒤
+        [name]: value //  name 키를 가진 값을 value 로 설정
+        });
     };
 
     const onReset=()=>{
-        setText("");
+        setInputs({
+            name: '',
+            nickname: '',
+          })
     };
   return (
     <div>
-        <input onChange={onChange} value={text}/>
+        <input name="name" placeholder="이름" onChange={onChange} value={name} />
+        <input name="nickname" placeholder="닉네임" onChange={onChange} value={nickname}/>
+       
         <button onClick={onReset}>초기화</button>
         <div>
-            <b>값: {text}</b>
+            <b>값: </b>
+            {name} ({nickname})
         </div>
     </div>
-  )
+  );
 }
 
